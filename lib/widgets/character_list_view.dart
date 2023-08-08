@@ -24,7 +24,6 @@ class _CharacterListViewState extends State<CharacterListView> {
     setState(() {
       characterList = characters;
     });
-    print(characterList);
   }
 
   @override

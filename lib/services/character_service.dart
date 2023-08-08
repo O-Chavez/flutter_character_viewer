@@ -13,9 +13,11 @@ class CharacterService {
       final data = jsonDecode(response.body);
       final characters = data['RelatedTopics'] as List<dynamic>;
 
-      return characters
+      final List<CharacterModel> characterList = characters
           .map((character) => CharacterModel.fromJson(character))
           .toList();
+
+      return characterList;
     } else {
       throw Exception('Failed to load characters');
     }

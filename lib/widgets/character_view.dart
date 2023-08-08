@@ -9,17 +9,34 @@ class CharacterView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.grey[200],
-        title: const Text('Character Viewer'),
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(character.title),
       ),
       body: Center(
-        child: Column(
-          children: [
-            // impliment the character image from the 'icon' property from the character object
-            Image.network('https://duckduckgo.com/${character.image}'),
-            const Text('Character Name'),
-            const Text('Character Description'),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              if (character.image.isEmpty)
+                const CircleAvatar(
+                  radius: 100,
+                  child: Icon(
+                    Icons.person,
+                    size: 100,
+                  ),
+                )
+              else
+                CircleAvatar(
+                  radius: 100,
+                  backgroundImage: NetworkImage(
+                    character.image,
+                  ),
+                ),
+              const SizedBox(height: 20),
+              Text(character.description),
+            ],
+          ),
         ),
       ),
     );

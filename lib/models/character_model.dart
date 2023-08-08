@@ -16,7 +16,7 @@ class CharacterModel {
     final imageUrl = json['Icon']['URL'] as String;
 
     return CharacterModel(
-      image: imageUrl,
+      image: imageUrl.isEmpty ? '' : 'https://duckduckgo.com/$imageUrl',
       description: description,
       title: title,
     );
