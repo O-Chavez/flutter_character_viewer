@@ -46,49 +46,49 @@ class _CharacterListViewState extends State<CharacterListView> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: TextField(
-              decoration: const InputDecoration(
-                hintText: 'Search characters',
-              ),
-              onChanged: _filterCharacters,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: TextField(
+            decoration: const InputDecoration(
+              hintText: 'Search characters',
             ),
+            onChanged: _filterCharacters,
           ),
-          if (filteredList.isEmpty)
-            const Center(
-              child: Text('There are no characters to display'),
-            )
-          else
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredList.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Column(
-                    children: [
-                      GestureDetector(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => CharacterView(
-                              character: filteredList[index],
-                            ),
+        ),
+        if (filteredList.isEmpty)
+          const Center(
+            child: Text('There are no characters to display'),
+          )
+        else
+          Expanded(
+            child: ListView.builder(
+              itemCount: filteredList.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CharacterView(
+                            character: filteredList[index],
                           ),
                         ),
-                        child: ListTile(
-                          title: Text(filteredList[index].title),
+                      ),
+                      child: ListTile(
+                        title: Text(
+                          filteredList[index].title,
                         ),
                       ),
-                    ],
-                  );
-                },
-              ),
+                    ),
+                  ],
+                );
+              },
             ),
-        ],
-      ),
+          ),
+      ],
     );
   }
 }
