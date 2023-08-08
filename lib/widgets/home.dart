@@ -26,9 +26,7 @@ class _HomeState extends State<Home> {
         title: Text(widget.title),
       ),
       body: const Center(
-        child: CharacterListView(
-          characterList: [],
-        ),
+        child: CharacterListView(),
       ),
     );
   }

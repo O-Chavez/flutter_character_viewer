@@ -10,7 +10,7 @@ class CharacterView extends StatelessWidget {
       child: Column(
         children: [
           // impliment the character image from the 'icon' property from the character object
-          Image.network(character['icon']),
+          Image.network(character['icon'].url),
           const Text('Character Name'),
           const Text('Character Description'),
         ],

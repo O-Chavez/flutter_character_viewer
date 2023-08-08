@@ -1,10 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_character_viewer/models/character_model.dart';
+import 'package:flutter_character_viewer/services/character_service.dart';
 
-class CharacterListView extends StatelessWidget {
-  final List<dynamic> characterList;
+class CharacterListView extends StatefulWidget {
+  const CharacterListView({Key? key}) : super(key: key);
 
-  const CharacterListView({Key? key, required this.characterList})
-      : super(key: key);
+  @override
+  State<CharacterListView> createState() => _CharacterListViewState();
+}
+
+class _CharacterListViewState extends State<CharacterListView> {
+  late List<CharacterModel> characterList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getCharacters();
+  }
+
+  Future<void> _getCharacters() async {
+    final characters = await CharacterService.getCharacters();
+    setState(() {
+      characterList = characters;
+    });
+    print(characterList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +38,6 @@ class CharacterListView extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
-                    SearchBar(),
                     GestureDetector(
                       onTap: () => Navigator.pushNamed(
                         context,
@@ -26,7 +45,7 @@ class CharacterListView extends StatelessWidget {
                         arguments: characterList[index],
                       ),
                       child: ListTile(
-                        title: Text(characterList[index]['name']),
+                        title: Text(characterList[index].title),
                       ),
                     ),
                   ],
