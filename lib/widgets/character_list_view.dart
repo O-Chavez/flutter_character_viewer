@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:flutter_character_viewer/services/character_service.dart';
+import 'package:flutter_character_viewer/widgets/character_view.dart';
 
 class CharacterListView extends StatefulWidget {
   const CharacterListView({Key? key}) : super(key: key);
@@ -39,10 +40,13 @@ class _CharacterListViewState extends State<CharacterListView> {
                 return Column(
                   children: [
                     GestureDetector(
-                      onTap: () => Navigator.pushNamed(
+                      onTap: () => Navigator.push(
                         context,
-                        '/character',
-                        arguments: characterList[index],
+                        MaterialPageRoute(
+                          builder: (context) => CharacterView(
+                            character: characterList[index],
+                          ),
+                        ),
                       ),
                       child: ListTile(
                         title: Text(characterList[index].title),
