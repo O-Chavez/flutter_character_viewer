@@ -12,6 +12,7 @@ class CharacterListView extends StatefulWidget {
 
 class _CharacterListViewState extends State<CharacterListView> {
   late List<CharacterModel> characterList = [];
+  late List<CharacterModel> filteredList = [];
 
   @override
   void initState() {
@@ -23,38 +24,71 @@ class _CharacterListViewState extends State<CharacterListView> {
     final characters = await CharacterService.getCharacters();
     setState(() {
       characterList = characters;
+      filteredList = characters;
+    });
+  }
+
+  void _filterCharacters(String query) {
+    setState(() {
+      if (query.isEmpty) {
+        filteredList = characterList;
+      } else {
+        filteredList = characterList
+            .where((character) =>
+                character.title.toLowerCase().contains(query.toLowerCase()) ||
+                character.description
+                    .toLowerCase()
+                    .contains(query.toLowerCase()))
+            .toList();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: characterList.isEmpty
-          ? const Center(
+      child: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Search characters',
+              ),
+              onChanged: _filterCharacters,
+            ),
+          ),
+          if (filteredList.isEmpty)
+            const Center(
               child: Text('There are no characters to display'),
             )
-          : ListView.builder(
-              itemCount: characterList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CharacterView(
-                            character: characterList[index],
+          else
+            Expanded(
+              child: ListView.builder(
+                itemCount: filteredList.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CharacterView(
+                              character: filteredList[index],
+                            ),
                           ),
                         ),
+                        child: ListTile(
+                          title: Text(filteredList[index].title),
+                        ),
                       ),
-                      child: ListTile(
-                        title: Text(characterList[index].title),
-                      ),
-                    ),
-                  ],
-                );
-              },
+                    ],
+                  );
+                },
+              ),
             ),
+        ],
+      ),
     );
   }
 }

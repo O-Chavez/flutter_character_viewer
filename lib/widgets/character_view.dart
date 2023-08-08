@@ -7,6 +7,10 @@ class CharacterView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final orientation = MediaQuery.of(context).orientation;
+    final isPortrait = orientation == Orientation.portrait;
+    final avatarRadius = isPortrait ? 150.0 : 100.0;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -19,22 +23,27 @@ class CharacterView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               if (character.image.isEmpty)
-                const CircleAvatar(
-                  radius: 100,
+                CircleAvatar(
+                  radius: avatarRadius,
                   child: Icon(
                     Icons.person,
-                    size: 100,
+                    size: isPortrait ? 100 : 75,
                   ),
                 )
               else
                 CircleAvatar(
-                  radius: 100,
+                  radius: avatarRadius,
                   backgroundImage: NetworkImage(
                     character.image,
                   ),
                 ),
               const SizedBox(height: 20),
-              Text(character.description),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(character.description),
+                ),
+              ),
             ],
           ),
         ),
