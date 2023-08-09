@@ -1,3 +1,4 @@
+import 'package:flutter_character_viewer/flavor_config.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_character_viewer/blocs/character_list_bloc.dart';
 import 'package:flutter_character_viewer/models/character_model.dart';
@@ -26,7 +27,8 @@ void main() {
 
   setUp(() {
     mockCharacterService = MockCharacterService();
-    bloc = CharacterListBloc(service: mockCharacterService);
+    bloc = CharacterListBloc(
+        service: mockCharacterService, config: FlavorConfig.simpsons());
   });
 
   tearDown(() {
