@@ -26,7 +26,14 @@ class CharacterView extends StatelessWidget {
           const SizedBox(height: 20),
           Padding(
             padding: const EdgeInsets.all(15.0),
-            child: Text(character.description),
+            child: Column(
+              children: [
+                Text('Description',
+                    style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: 20),
+                Text(character.description),
+              ],
+            ),
           ),
         ],
       ),
@@ -46,7 +53,6 @@ class CharacterView extends StatelessWidget {
             child: isImageAvailable
                 ? Image.network(
                     character.image,
-                    scale: 1.75,
                   )
                 : Icon(
                     Icons.person,

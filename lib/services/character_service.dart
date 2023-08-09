@@ -6,7 +6,7 @@ class CharacterService {
   static const String baseUrl =
       'http://api.duckduckgo.com/?q=simpsons+characters&format=json';
 
-  static Future<List<CharacterModel>> getCharacters() async {
+  Future<List<CharacterModel>> getCharacters() async {
     final response = await http.get(Uri.parse(baseUrl));
 
     if (response.statusCode == 200) {

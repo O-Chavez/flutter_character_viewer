@@ -4,27 +4,37 @@ import 'dart:async';
 
 class CharacterListBloc {
   final _characterListController = StreamController<List<CharacterModel>>();
-  Stream<List<CharacterModel>> get filteredListStream =>
-      _characterListController.stream;
 
-  List<CharacterModel> characterList = [];
-  List<CharacterModel> filteredList = [];
+  Stream<List<CharacterModel>> get filteredListStream async* {
+    yield* _characterListController.stream;
+  }
+
+  final List<CharacterModel> characterList;
+  final List<CharacterModel> filteredList;
+
+  final CharacterService characterService;
+
+  CharacterListBloc({CharacterService? service})
+      : characterService = service ?? CharacterService(),
+        characterList = [],
+        filteredList = [];
 
   Future<void> getCharacters() async {
-    final characters = await CharacterService.getCharacters();
-    characterList = characters;
+    final characters = await characterService.getCharacters();
+    characterList.clear();
+    characterList.addAll(characters);
     filterCharacters('');
   }
 
   void filterCharacters(String query) {
     if (query.isEmpty) {
-      filteredList = characterList;
+      filteredList.clear();
+      filteredList.addAll(characterList);
     } else {
-      filteredList = characterList
-          .where((character) =>
-              character.title.toLowerCase().contains(query.toLowerCase()) ||
-              character.description.toLowerCase().contains(query.toLowerCase()))
-          .toList();
+      filteredList.clear();
+      filteredList.addAll(characterList.where((character) =>
+          character.title.toLowerCase().contains(query.toLowerCase()) ||
+          character.description.toLowerCase().contains(query.toLowerCase())));
     }
     _characterListController.add(filteredList);
   }
