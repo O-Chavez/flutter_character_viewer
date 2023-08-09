@@ -1,3 +1,4 @@
+import 'package:flutter_character_viewer/flavor_config.dart';
 import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:flutter_character_viewer/services/character_service.dart';
 import 'dart:async';
@@ -14,8 +15,11 @@ class CharacterListBloc {
 
   final CharacterService characterService;
 
-  CharacterListBloc({CharacterService? service})
-      : characterService = service ?? CharacterService(),
+  CharacterListBloc({
+    required FlavorConfig config,
+    CharacterService? service, // dependency injection for testing
+  })  : characterService =
+            service ?? CharacterService(apiEndpoint: config.apiEndpoint),
         characterList = [],
         filteredList = [];
 

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_character_viewer/blocs/character_list_bloc.dart';
+import 'package:flutter_character_viewer/flavor_config.dart';
 import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:flutter_character_viewer/widgets/character_view.dart';
 
 class CharacterListView extends StatefulWidget {
-  const CharacterListView({Key? key}) : super(key: key);
+  final FlavorConfig config;
+  const CharacterListView({Key? key, required this.config}) : super(key: key);
 
   @override
   State<CharacterListView> createState() => _CharacterListViewState();
@@ -16,7 +18,7 @@ class _CharacterListViewState extends State<CharacterListView> {
   @override
   void initState() {
     super.initState();
-    _characterBloc = CharacterListBloc()..getCharacters();
+    _characterBloc = CharacterListBloc(config: widget.config)..getCharacters();
   }
 
   @override

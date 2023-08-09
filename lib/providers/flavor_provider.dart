@@ -2,18 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_character_viewer/flavor_config.dart';
 
 class FlavorProvider with ChangeNotifier {
-  final FlavorConfig appConfig;
+  final Flavor appFlavor;
 
-  FlavorProvider(this.appConfig);
+  FlavorProvider({required this.appFlavor});
 
-  Flavor _currentFlavor = Flavor.simpsons;
-
-  Flavor get currentFlavor => _currentFlavor;
-
-  set currentFlavor(Flavor flavor) {
-    _currentFlavor = flavor;
-    notifyListeners();
-  }
+  Flavor get _currentFlavor => appFlavor;
 
   FlavorConfig get config {
     switch (_currentFlavor) {

@@ -11,8 +11,9 @@ class CharacterModel {
 
   factory CharacterModel.fromJson(Map<String, dynamic> json) {
     final text = json['Text'] as String;
-    final title = text.split(' - ')[0];
-    final description = text.split(' - ')[1];
+    final textParts = text.split(' - ');
+    final title = textParts.isNotEmpty ? textParts[0] : text;
+    final description = textParts.length > 1 ? textParts[1] : '';
     final imageUrl = json['Icon']['URL'] as String;
 
     return CharacterModel(
