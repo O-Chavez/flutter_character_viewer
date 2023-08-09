@@ -54,24 +54,6 @@ void main() {
   group('getCharacters', () {
     test('should populate characterList with characters from service',
         () async {
-      final characters = [
-        CharacterModel(
-          title: 'Character 1',
-          description: 'Description 1',
-          image: 'https://duckduckgo.com/i/1.jpg',
-        ),
-        CharacterModel(
-          title: 'Character 2',
-          description: 'Description 2',
-          image: 'https://duckduckgo.com/i/2.jpg',
-        ),
-        CharacterModel(
-          title: 'Character 3',
-          description: 'Description 3',
-          image: 'https://duckduckgo.com/i/3.jpg',
-        ),
-      ];
-
       when(mockCharacterService.getCharacters())
           .thenAnswer((_) async => characters);
 

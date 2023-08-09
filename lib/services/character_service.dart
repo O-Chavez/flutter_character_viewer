@@ -3,11 +3,12 @@ import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:http/http.dart' as http;
 
 class CharacterService {
-  static const String baseUrl =
-      'http://api.duckduckgo.com/?q=simpsons+characters&format=json';
+  String apiEndpoint;
+
+  CharacterService({required this.apiEndpoint});
 
   Future<List<CharacterModel>> getCharacters() async {
-    final response = await http.get(Uri.parse(baseUrl));
+    final response = await http.get(Uri.parse(apiEndpoint));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
