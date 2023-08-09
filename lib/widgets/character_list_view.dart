@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_character_viewer/blocs/character_list_bloc.dart';
+import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:flutter_character_viewer/widgets/character_view.dart';
 
 class CharacterListView extends StatefulWidget {
@@ -10,71 +11,100 @@ class CharacterListView extends StatefulWidget {
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
-  final _characterBloc = CharacterListBloc();
+  late CharacterListBloc _characterBloc;
 
   @override
   void initState() {
     super.initState();
-    _characterBloc.getCharacters();
+    _characterBloc = CharacterListBloc()..getCharacters();
   }
 
-  void _filterCharacters(String query) {
-    setState(() {
-      _characterBloc.filterCharacters(query);
-    });
+  @override
+  void dispose() {
+    _characterBloc.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: TextField(
-            decoration: const InputDecoration(
-              hintText: 'Search characters',
-            ),
-            onChanged: _filterCharacters,
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      child: Column(
+        children: [
+          _buildSearchTextField(),
+          StreamBuilder<List<CharacterModel>>(
+            stream: _characterBloc.filteredListStream,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return _buildLoadingIndicator();
+              } else if (snapshot.hasError) {
+                return _buildErrorMessage();
+              } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                return _buildNoCharactersMessage();
+              } else {
+                return _buildCharacterList(snapshot.data!);
+              }
+            },
           ),
-        ),
-        if (_characterBloc.filteredList.isEmpty)
-          const Center(
-            child: Text('There are no characters to display'),
-          )
-        else
-          Expanded(
-            child: ListView.builder(
-              itemCount: _characterBloc.filteredList.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Column(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => CharacterView(
-                            character: _characterBloc.filteredList[index],
-                          ),
-                        ),
-                      ),
-                      child: ListTile(
-                        title: Text(
-                          _characterBloc.filteredList[index].title,
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              },
-            ),
-          ),
-      ],
+        ],
+      ),
     );
   }
 
-  // @override
-  // void dispose() {
-  //   _characterBloc.dispose();
-  //   super.dispose();
-  // }
+  Widget _buildSearchTextField() {
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: TextField(
+        decoration: const InputDecoration(
+          hintText: 'Search characters',
+        ),
+        onChanged: _characterBloc.filterCharacters,
+      ),
+    );
+  }
+
+  Widget _buildLoadingIndicator() {
+    return const Center(
+      child: CircularProgressIndicator(),
+    );
+  }
+
+  Widget _buildErrorMessage() {
+    return const Center(
+      child: Text('An error occurred while fetching data.'),
+    );
+  }
+
+  Widget _buildNoCharactersMessage() {
+    return const Center(
+      child: Text('There are no characters to display.'),
+    );
+  }
+
+  Widget _buildCharacterList(List<CharacterModel> characters) {
+    return Expanded(
+      child: ListView.builder(
+        itemCount: characters.length,
+        itemBuilder: (BuildContext context, int index) {
+          return GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => CharacterView(
+                    character: characters[index],
+                  ),
+                ),
+              );
+            },
+            child: ListTile(
+              title: Text(characters[index].title),
+            ),
+          );
+        },
+      ),
+    );
+  }
 }

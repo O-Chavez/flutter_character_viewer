@@ -3,7 +3,8 @@ import 'package:flutter_character_viewer/models/character_model.dart';
 
 class CharacterView extends StatelessWidget {
   final CharacterModel character;
-  const CharacterView({super.key, required this.character});
+
+  const CharacterView({Key? key, required this.character}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,39 +19,39 @@ class CharacterView extends StatelessWidget {
       ),
       body: ListView(
         children: [
-          const SizedBox(
-            height: 15,
-          ),
+          const SizedBox(height: 15),
           Center(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  if (character.image.isEmpty)
-                    CircleAvatar(
-                      radius: avatarRadius,
-                      child: Icon(
-                        Icons.person,
-                        size: isPortrait ? 100 : 75,
-                      ),
-                    )
-                  else
-                    CircleAvatar(
-                      radius: avatarRadius,
-                      child: Image.network(
-                        character.image,
-                        scale: 1.75,
-                      ),
-                    ),
-                  const SizedBox(height: 20),
-                  Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Text(character.description),
+            child: _buildAvatar(isPortrait, avatarRadius),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: Text(character.description),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAvatar(bool isPortrait, double avatarRadius) {
+    final isImageAvailable = character.image.isNotEmpty;
+
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          CircleAvatar(
+            radius: avatarRadius,
+            child: isImageAvailable
+                ? Image.network(
+                    character.image,
+                    scale: 1.75,
+                  )
+                : Icon(
+                    Icons.person,
+                    size: isPortrait ? 100 : 75,
                   ),
-                ],
-              ),
-            ),
           ),
         ],
       ),
