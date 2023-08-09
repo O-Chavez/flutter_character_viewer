@@ -54,6 +54,23 @@ android {
         versionName flutterVersionName
     }
 
+    flavorDimensions "app"
+
+    productFlavors {
+        simpsons {
+          dimension "app"
+          applicationId 'com.sample.simpsonsviewer'
+          versionCode 1
+          versionName "1.0.0-simpsons"
+        }
+        theWire {
+          dimension "app"
+          applicationId 'com.sample.wireviewer'
+          versionCode 1
+          versionName "1.0.0-theWire"
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
