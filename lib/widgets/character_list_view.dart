@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_character_viewer/models/character_model.dart';
-import 'package:flutter_character_viewer/services/character_service.dart';
+import 'package:flutter_character_viewer/blocs/character_list_bloc.dart';
 import 'package:flutter_character_viewer/widgets/character_view.dart';
 
 class CharacterListView extends StatefulWidget {
@@ -11,36 +10,17 @@ class CharacterListView extends StatefulWidget {
 }
 
 class _CharacterListViewState extends State<CharacterListView> {
-  late List<CharacterModel> characterList = [];
-  late List<CharacterModel> filteredList = [];
+  final _characterBloc = CharacterListBloc();
 
   @override
   void initState() {
     super.initState();
-    _getCharacters();
-  }
-
-  Future<void> _getCharacters() async {
-    final characters = await CharacterService.getCharacters();
-    setState(() {
-      characterList = characters;
-      filteredList = characters;
-    });
+    _characterBloc.getCharacters();
   }
 
   void _filterCharacters(String query) {
     setState(() {
-      if (query.isEmpty) {
-        filteredList = characterList;
-      } else {
-        filteredList = characterList
-            .where((character) =>
-                character.title.toLowerCase().contains(query.toLowerCase()) ||
-                character.description
-                    .toLowerCase()
-                    .contains(query.toLowerCase()))
-            .toList();
-      }
+      _characterBloc.filterCharacters(query);
     });
   }
 
@@ -57,14 +37,14 @@ class _CharacterListViewState extends State<CharacterListView> {
             onChanged: _filterCharacters,
           ),
         ),
-        if (filteredList.isEmpty)
+        if (_characterBloc.filteredList.isEmpty)
           const Center(
             child: Text('There are no characters to display'),
           )
         else
           Expanded(
             child: ListView.builder(
-              itemCount: filteredList.length,
+              itemCount: _characterBloc.filteredList.length,
               itemBuilder: (BuildContext context, int index) {
                 return Column(
                   children: [
@@ -73,13 +53,13 @@ class _CharacterListViewState extends State<CharacterListView> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CharacterView(
-                            character: filteredList[index],
+                            character: _characterBloc.filteredList[index],
                           ),
                         ),
                       ),
                       child: ListTile(
                         title: Text(
-                          filteredList[index].title,
+                          _characterBloc.filteredList[index].title,
                         ),
                       ),
                     ),
@@ -91,4 +71,10 @@ class _CharacterListViewState extends State<CharacterListView> {
       ],
     );
   }
+
+  // @override
+  // void dispose() {
+  //   _characterBloc.dispose();
+  //   super.dispose();
+  // }
 }

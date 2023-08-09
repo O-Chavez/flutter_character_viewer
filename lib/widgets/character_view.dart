@@ -18,6 +18,9 @@ class CharacterView extends StatelessWidget {
       ),
       body: ListView(
         children: [
+          const SizedBox(
+            height: 15,
+          ),
           Center(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
@@ -37,6 +40,7 @@ class CharacterView extends StatelessWidget {
                       radius: avatarRadius,
                       child: Image.network(
                         character.image,
+                        scale: 1.75,
                       ),
                     ),
                   const SizedBox(height: 20),
