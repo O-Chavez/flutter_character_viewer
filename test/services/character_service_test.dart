@@ -57,7 +57,5 @@ void main() {
 
       expect(() => characterService.getCharacters(), throwsException);
     });
-
-    // You can add more tests to cover edge cases and different scenarios
   });
 }

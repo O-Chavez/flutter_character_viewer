@@ -52,7 +52,7 @@ class CharacterView extends StatelessWidget {
             radius: avatarRadius,
             child: isImageAvailable
                 ? ClipRRect(
-                    borderRadius: BorderRadius.circular(300.0),
+                    borderRadius: BorderRadius.circular(avatarRadius),
                     child: Image.network(
                       character.image,
                       fit: BoxFit.scaleDown,
