@@ -1,8 +1,6 @@
 import 'dart:convert';
-import 'package:flutter_character_viewer/models/character_model.dart';
 import 'package:flutter_character_viewer/services/character_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:http/http.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
