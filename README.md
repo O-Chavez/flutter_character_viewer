@@ -8,7 +8,9 @@ To run the **Simpsons Character Viewer**, follow these steps:
 
 2. Navigate to the project file
 
-3. Use the following command:
+3. (Optional) Run the command `flutter pub get`
+
+4. Use the following command:
 
 
 `flutter run --flavor simpsons -t lib/main_simpsons.dart`
@@ -21,7 +23,9 @@ To run the **The Wire Character Viewer**, follow these steps:
 
 2. Navigate to the project file
 
-3. Use the following command:
+3. (Optional) Run the command `flutter pub get`
+
+4. Use the following command:
 
 `flutter run --flavor theWire -t lib/main_the_wire.dart`
 
