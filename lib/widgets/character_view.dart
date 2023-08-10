@@ -51,8 +51,12 @@ class CharacterView extends StatelessWidget {
           CircleAvatar(
             radius: avatarRadius,
             child: isImageAvailable
-                ? Image.network(
-                    character.image,
+                ? ClipRRect(
+                    borderRadius: BorderRadius.circular(300.0),
+                    child: Image.network(
+                      character.image,
+                      fit: BoxFit.scaleDown,
+                    ),
                   )
                 : Icon(
                     Icons.person,
